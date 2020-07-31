@@ -12,8 +12,11 @@ describe('beerflix app', () => {
     });
 
     it.only('login', () => {
-        cy.get('[data-cy=email-input]').type('kevin');
-        cy.get('[data-cy=password-input]').type('kevin', {log: false});
+        cy.fixture('login.json')
+            .then(({ user, fakePwd }) => {
+                cy.log(user)
+                cy.get('[data-cy=email-input]').type('user');
+                cy.get('[data-cy=password-input]').type('fakePwd', {log: false});
+            })
     });
 });
-
