@@ -1,5 +1,6 @@
 describe('beerflix app', () => {
     beforeEach(() => {
+        cy.fixture('login.json').as('loginData');
         cy.visit('/');
     });
     
@@ -12,7 +13,7 @@ describe('beerflix app', () => {
     });
 
     it.only('login', () => {
-        cy.fixture('login.json')
+       cy.get('@loginData')
             .then(({ user, fakePwd }) => {
                 cy.log(user)
                 cy.get('[data-cy=email-input]').type('user');
