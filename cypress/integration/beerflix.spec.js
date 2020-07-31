@@ -17,6 +17,9 @@ describe('beerflix app', () => {
         cy.route('POST', '/api/v1/user/login').as('loginRequest');
         cy.get('@loginData')
             .then(({ user, fakePwd }) => {
+                cy.screenshot('my-screenshot-login-1', {
+                    capture: 'runner'
+                });
                 cy.login({ user, fakePwd });
                 cy.wait('@loginRequest');
                 cy.url().should('include', '/home');
@@ -33,13 +36,17 @@ describe('beerflix app', () => {
         }).as('loginRequest');
         cy.get('@loginData')
             .then(({ user, fakePwd }) => {
+                cy.screenshot('my-screenshot-login-error-2', {
+                    capture: 'viewport',
+                    blackout: ['form']
+                });
                 cy.login({ user, fakePwd });
                 cy.wait('@loginRequest');
                 cy.get('[data-cy=login-error]');
             })
     });
 
-    it.only('Get beers 10', () => {
+    it('Get beers 10', () => {
         cy.server();
         cy.route('GET', '/api/v1/beers**').as('getBeers');
         cy.login();
