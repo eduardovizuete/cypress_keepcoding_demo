@@ -17,15 +17,13 @@ describe('beerflix app', () => {
         cy.route('POST', '/api/v1/user/login').as('loginRequest');
         cy.get('@loginData')
             .then(({ user, fakePwd }) => {
-                cy.log(user)
-                cy.get('[data-cy=email-input]').type(user);
-                cy.get('[data-cy=password-input]').type(fakePwd, {log: false});
+                cy.login({ user, fakePwd });
                 cy.wait('@loginRequest');
                 cy.url().should('include', '/home');
             })
     });
 
-    it.only('login error', () => {
+    it('login error', () => {
         cy.server();
         cy.route({
             method: 'POST',
@@ -35,11 +33,9 @@ describe('beerflix app', () => {
         }).as('loginRequest');
         cy.get('@loginData')
             .then(({ user, fakePwd }) => {
-                cy.log(user)
-                cy.get('[data-cy=email-input]').type(user);
-                cy.get('[data-cy=password-input]').type(fakePwd, {log: false});
+                cy.login({ user, fakePwd });
                 cy.wait('@loginRequest');
-                cy.get('[data-cy=login-error]')
+                cy.get('[data-cy=login-error]');
             })
     });
 });
