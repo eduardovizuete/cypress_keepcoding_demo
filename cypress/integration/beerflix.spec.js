@@ -38,4 +38,12 @@ describe('beerflix app', () => {
                 cy.get('[data-cy=login-error]');
             })
     });
+
+    it.only('Get beers 10', () => {
+        cy.server();
+        cy.route('GET', '/api/v1/beers**').as('getBeers');
+        cy.login();
+        cy.wait('@getBeers')
+        cy.get('[data-cy=beer-item]').should('have.length', 10);
+    });
 });
