@@ -3,8 +3,8 @@ describe('beerflix app', () => {
         cy.fixture('login.json').as('loginData');
         cy.visit('/');
     });
-    
-    
+
+
     it('visit app', () => {
         cy.get('[data-cy=email-input]');
         cy.get('[data-cy=login-image]')
@@ -48,9 +48,26 @@ describe('beerflix app', () => {
 
     it('Get beers 10', () => {
         cy.server();
-        cy.route('GET', '/api/v1/beers**').as('getBeers');
+        cy.route('GET', '/api/v1/beers**').as('beerRequest');
         cy.login();
-        cy.wait('@getBeers')
+        cy.wait('@beerRequest')
         cy.get('[data-cy=beer-item]').should('have.length', 10);
     });
+
+    it('should add one like to the first', () => {
+        cy.server();
+        cy.route('POST', '/api/v1/beers/*/like').as('likeRequest');
+        cy.route('GET', '/api/v1/beers**').as('beerRequest');
+        cy.login();
+        cy.get('[data-cy=search-input]').type('pilsen{enter}');
+        cy.wait('@beerRequest');
+        cy.get('[data-cy=beer-item]').first().should('have.id', '4');
+        cy.get('[data-cy=beer-button]').first().as('firstLikeButton');
+        cy.get('@firstLikeButton').click();
+        cy.wait('@likeRequest');
+        cy.get('@firstLikeButton').contains(1);
+        cy.cleanBeerLike();
+    });
+
+
 });

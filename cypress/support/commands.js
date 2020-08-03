@@ -24,10 +24,10 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add("login", ({ user = '', fakePwd = '' } = {}) => { 
+Cypress.Commands.add("login", ({ user = '', fakePwd = '' } = {}) => {
     if (!user && !fakePwd) {
         // API login
-        cy.request('POST', Cypress.env('apiURL'), { email: Cypress.env('testUser'),})
+        cy.request('POST', Cypress.env('apiURL'), { email: Cypress.env('testUser') })
             .then(({ body }) => {
                 const { user } = body;
                 cy.setCookie('token', user.apiKey);
@@ -35,6 +35,19 @@ Cypress.Commands.add("login", ({ user = '', fakePwd = '' } = {}) => {
             });
     } else {
         cy.get('[data-cy=email-input]').type(user);
-        cy.get('[data-cy=password-input]').type(fakePwd, {log: false});
+        cy.get('[data-cy=password-input]').type(fakePwd, { log: false });
     }
+});
+
+Cypress.Commands.add("cleanBeerLike", () => {
+    cy.getCookie('token')
+        .then(cookie => {
+            cy.request({
+                method: 'DELETE',
+                url: Cypress.env('resetLikeURL'),
+                headers: {
+                    'X-API-KEY': cookie.value
+                }
+            });
+        });
 });
