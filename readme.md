@@ -6,7 +6,6 @@ Curso: plataforma.keepcoding.io/courses
   Instructor: Kevin Julian Martinez Escobar 
   github/kevinccbsg
   
-  https://github.com/kevinccbsg/cypress-keepcoding-talk
-  api: https://github.com/kevinccbsg/web-bootcamp-exercise-beer-api
-
-
+  webinar example:  https://github.com/kevinccbsg/cypress-keepcoding-talk
+  api:              https://github.com/kevinccbsg/web-bootcamp-exercise-beer-api
+  dashboard:        dashboard.cypress.io/projects/tpgazg/runs
